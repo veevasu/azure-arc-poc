@@ -21,7 +21,7 @@ jobs:
         with:
           tenant-id: $ {{ secrets.AZURE_TENANT_ID }}
           subscription-id: $ {{ secrets.AZURE_SUBSCRIPTION_ID }}
-          auth-type: IDENTITY_TOKEN
+          auth-type: IDENTITY
           allow-no-subscription: false
 
       - name: Setup Terraform
