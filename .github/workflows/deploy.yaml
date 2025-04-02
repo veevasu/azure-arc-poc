@@ -1,0 +1,40 @@
+name : Deploy Azure Resources
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents:read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Authenticate to Azure using OIDC
+        uses: azure/login@v1
+        with:
+          tenant-id: $ {{ secrets.AZURE_TENANT_ID }}
+          subscription-id: $ {{ secrets.AZURE_SUBSCRIPTION_ID }}
+          allow-no-subscription: true
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        run : terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan
+
+      - name: Terraform Apply
+        run: terraform apply
+-auto-approve
